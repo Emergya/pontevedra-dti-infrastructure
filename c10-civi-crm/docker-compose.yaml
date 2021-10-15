@@ -1,0 +1,76 @@
+version: '3.9'
+
+services:
+
+  php:
+    image: pontevedra-civicrm:latest
+    build:
+      context: infrastructure/docker-containers/drupal
+      dockerfile: Dockerfile
+    volumes:
+    - type: bind
+      source: ./src
+      target: /var/www/html
+    - type: volume
+      source: drupalfiles
+      target: /var/www/html/web/sites/default/files
+    #- type: bind
+    #  source: ~/.ssh/pontevedra.pem
+    #  target: /home/emergya/.ssh/${PROJECT_NAME}.pem
+    environment:
+      GENERATE_TEMPLATES: "true"
+      MYSQL_USER: drupal
+      MYSQL_DATABASE: pontevedra
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
+      PROJECT_NAME: civi.pontevedra
+      PROJECT_NAME_SUFIX: ""
+      PROJECT_BASE_DOMAIN: emergyalabs.com
+      CIVI_DATABASE: civi
+      ENVIRONMENT: dev
+      # secrets:
+      MYSQL_PASSWORD: password
+      CIVICRM_SITE_KEY: rwBk1mZVN7oQW4XsKUnLo8Z4wzu1N3HYfuxv6YirAw
+      CIVICRM_CRED_KEY: NXv1oPH45ptuVyOBOSbkjHDbwAn9Hf0suxKpaN5dggLJlz48uQ
+      CIVICRM_SIGN_KEY: E6g1BXNxKc37m9s5IzPfKcjeZ7hszmG69CFBF6Ct8QuJoBcQv7iw
+    networks:
+      - esm
+    ports:
+     - 80:80
+     - 443:443
+
+  db:
+    image: mysql:5.7
+    command: --max-allowed-packet=67108864
+    volumes:
+    - type: volume
+      source: drupaldatabase
+      target: /var/lib/mysql
+    #- type: bind
+    #  source: ./data/initial.sql
+    #  target: /docker-entrypoint-initdb.d/initial.sql
+    environment:
+      MYSQL_DATABASE: pontevedra
+      MYSQL_USER: drupal
+      # secrets:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_PASSWORD: password
+    networks:
+      - esm
+
+volumes:
+  drupaldatabase:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./data/docker-containers-volumes/var/lib/mysql
+      o: bind
+  drupalfiles:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./data/docker-containers-volumes/var/www/html/web/sites/default/files
+      o: bind
+
+networks:
+  esm:

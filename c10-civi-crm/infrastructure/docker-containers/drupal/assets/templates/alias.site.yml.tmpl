@@ -1,0 +1,28 @@
+local:
+  root: {{ getenv "DRUPAL_ROOT" "/var/www/html/web" }}
+  uri: dev-{{ getenv "PROJECT_NAME" "drupal" }}.emergyalabs.com
+
+ci:
+  host: ci-{{ getenv "PROJECT_NAME" "drupal" }}{{ getenv "PROJECT_NAME_SUFIX" }}.emergyalabs.com
+  root: {{ getenv "DRUPAL_ROOT" "/var/www/html/web" }}
+  uri: ci-{{ getenv "PROJECT_NAME" "drupal" }}.emergyalabs.com
+  user: emergya
+  ssh:
+    options: '-o StrictHostKeyChecking=no -i /home/emergya/.ssh/pontevedra.pem -p 22122'
+
+pre:
+  host: pre-{{ getenv "PROJECT_NAME" "drupal" }}.emergyalabs.com
+  root: {{ getenv "DRUPAL_ROOT" "/var/www/html/web" }}
+  uri: pre-{{ getenv "PROJECT_NAME" "drupal" }}.emergyalabs.com
+  user: emergya
+  ssh:
+    options: '-i /home/emergya/.ssh/{{ getenv "PROJECT_NAME" "drupal" }}.pem -o ProxyCommand="ssh -i /home/emergya/.ssh/{{ getenv "PROJECT_NAME" "drupal" }}.pem ubuntu@pre-{{ getenv "PROJECT_NAME" "drupal" }}{{ getenv "PROJECT_NAME_SUFIX" }}-bastion.emergyalabs.com -W %h:%p " -p 22122'
+
+pro:
+  host: pro-{{ getenv "PROJECT_NAME" "drupal" }}.emergyalabs.com
+  root: {{ getenv "DRUPAL_ROOT" "/var/www/html/web" }}
+  uri: pro-{{ getenv "PROJECT_NAME" "drupal" }}.emergyalabs.com
+  user: emergya
+  ssh:
+    options: '-i /home/emergya/.ssh/{{ getenv "PROJECT_NAME" "drupal" }}.pem -o ProxyCommand="ssh -i /home/emergya/.ssh/{{ getenv "PROJECT_NAME" "drupal" }}.pem ubuntu@pro-{{ getenv "PROJECT_NAME" "drupal" }}{{ getenv "PROJECT_NAME_SUFIX" }}-bastion.emergyalabs.com -W %h:%p " -p 22122'
+

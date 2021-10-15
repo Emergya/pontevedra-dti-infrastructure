@@ -1,0 +1,5 @@
+drush:
+  uri: 'http://{{ getenv "PROJECT_NAME" "drupal" }}.{{ getenv "PROJECT_BASE_DOMAIN" "localhost" }}'
+  paths:
+    alias-path:
+      - '/etc/drush/sites'

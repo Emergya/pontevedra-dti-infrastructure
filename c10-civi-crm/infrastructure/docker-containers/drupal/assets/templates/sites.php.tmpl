@@ -1,0 +1,7 @@
+<?php
+
+$site = '{{ getenv "PROJECT_NAME" "drupal" }}.{{ getenv "PROJECT_BASE_DOMAIN" "example.local" }}';
+
+{{ if getenv "DRUPAL_HOSTS" }}{{ range jsonArray (getenv "DRUPAL_HOSTS") }}
+$sites['{{ . }}'] = $site;
+{{ end }}{{ end }}
