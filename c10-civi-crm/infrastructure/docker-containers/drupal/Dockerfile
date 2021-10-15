@@ -49,7 +49,7 @@ RUN a2enmod headers proxy ssl
 
 EXPOSE 9000
 
-USER emergya
+#USER emergya
 
 ENTRYPOINT ["/assets/bin/docker-entrypoint.sh"]
 

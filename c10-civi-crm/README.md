@@ -28,7 +28,7 @@ make bootstrap-civi
 
 ```
 make up
-install-drupal-civi
+make install-drupal-civi
 ```
 
 nota: Las credenciales del usuario admin apareceran en pantalla
